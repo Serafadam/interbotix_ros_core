@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.5)
+project(xseries_msgs)
+
+if (NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
+if (CMAKE_COMPILER_IS_GNUXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+
+ set (MSG_FILES
+   msg/JointGroupCommand.msg
+   msg/JointSingleCommand.msg
+   msg/JointTrajectoryCommand.msg
+ )
+
+## Generate services in the 'srv' folder
+ set (SRV_FILES
+   srv/MotorGains.srv
+   srv/OperatingModes.srv
+   srv/Reboot.srv
+   srv/RegisterValues.srv
+   srv/RobotInfo.srv
+   srv/TorqueEnable.srv
+ )
+ rosidl_generate_interfaces(${PROJECT_NAME}
+  ${MSG_FILES}
+  ${SRV_FILES}
+ DEPENDENCIES std_msgs
+)
+
+ament_package()
