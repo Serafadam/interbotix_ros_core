@@ -1,10 +1,12 @@
-#include "interbotix_xs_sdk/xs_sdk_obj.h"
+#include "interbotix_xs_sdk/xs_sdk_obj.hpp"
 
 int main( int argc, char** argv )
 {
-    ros::init(argc, argv, "xs_sdk");
-    ros::NodeHandle n;
-    InterbotixRobotXS bot(&n);
-    ros::spin();
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<InterbotixRobotXS>();
+    rclcpp::executors::MultiThreadedExecutor exec;
+    exec.add_node(node);
+    exec.spin();
+    rclcpp::shutdown();
     return 0;
 }
