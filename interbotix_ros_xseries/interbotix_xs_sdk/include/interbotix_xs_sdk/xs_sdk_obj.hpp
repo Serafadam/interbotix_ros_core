@@ -9,15 +9,15 @@
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 #include <dynamixel_workbench_toolbox/dynamixel_workbench.h>
-#include "xseries_msgs/srv/reboot.hpp"
-#include "xseries_msgs/srv/robot_info.hpp"
-#include "xseries_msgs/srv/motor_gains.hpp"
-#include "xseries_msgs/srv/torque_enable.hpp"
-#include "xseries_msgs/srv/operating_modes.hpp"
-#include "xseries_msgs/srv/register_values.hpp"
-#include "xseries_msgs/msg/joint_group_command.hpp"
-#include "xseries_msgs/msg/joint_single_command.hpp"
-#include "xseries_msgs/msg/joint_trajectory_command.hpp"
+#include "interbotix_xs_msgs/srv/reboot.hpp"
+#include "interbotix_xs_msgs/srv/robot_info.hpp"
+#include "interbotix_xs_msgs/srv/motor_gains.hpp"
+#include "interbotix_xs_msgs/srv/torque_enable.hpp"
+#include "interbotix_xs_msgs/srv/operating_modes.hpp"
+#include "interbotix_xs_msgs/srv/register_values.hpp"
+#include "interbotix_xs_msgs/msg/joint_group_command.hpp"
+#include "interbotix_xs_msgs/msg/joint_single_command.hpp"
+#include "interbotix_xs_msgs/msg/joint_trajectory_command.hpp"
 
 #define BAUDRATE 1000000                                                // All motors are preset to 1M baud
 #define PORT "/dev/ttyDXL"                                              // Udev rule creates a symlink with this name
@@ -65,15 +65,15 @@ struct MotorInfo                                                        // Struc
   int32_t value;                                                        // Value to write to the above register for the specified motor
 };
 
-using MotorGains = xseries_msgs::srv::MotorGains;
-using OperatingModes = xseries_msgs::srv::OperatingModes;
-using Reboot = xseries_msgs::srv::Reboot;
-using RegisterValues = xseries_msgs::srv::RegisterValues;
-using RobotInfo = xseries_msgs::srv::RobotInfo;
-using TorqueEnable = xseries_msgs::srv::TorqueEnable;
-using JointGroupCommand = xseries_msgs::msg::JointGroupCommand;
-using JointSingleCommand = xseries_msgs::msg::JointSingleCommand;
-using JointTrajectoryCommand = xseries_msgs::msg::JointTrajectoryCommand;
+using MotorGains = interbotix_xs_msgs::srv::MotorGains;
+using OperatingModes = interbotix_xs_msgs::srv::OperatingModes;
+using Reboot = interbotix_xs_msgs::srv::Reboot;
+using RegisterValues = interbotix_xs_msgs::srv::RegisterValues;
+using RobotInfo = interbotix_xs_msgs::srv::RobotInfo;
+using TorqueEnable = interbotix_xs_msgs::srv::TorqueEnable;
+using JointGroupCommand = interbotix_xs_msgs::msg::JointGroupCommand;
+using JointSingleCommand = interbotix_xs_msgs::msg::JointSingleCommand;
+using JointTrajectoryCommand = interbotix_xs_msgs::msg::JointTrajectoryCommand;
 
 // Interbotix Core Class to build any type of Dynamixel-based robot
 class InterbotixRobotXS : public rclcpp::Node

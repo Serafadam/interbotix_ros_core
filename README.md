@@ -15,6 +15,10 @@ Coming soon...
 
 Support-level software can be found in the [interbotix_ros_toolboxes](https://github.com/Interbotix/interbotix_ros_toolboxes) repository
 
+### Build Status
+![build-melodic Status](https://github.com/Interbotix/interbotix_ros_core/actions/workflows/melodic.yaml/badge.svg)
+![build-noetic Status](https://github.com/Interbotix/interbotix_ros_core/actions/workflows/noetic.yaml/badge.svg)
+
 ## Repo Structure
 ```
 GitHub Landing Page: Explains repository structure and contains a single directory for each type of actuator.
@@ -47,8 +51,16 @@ The third software layer is optional and only exists to provide Python modules o
 ##### Research Layer
 The final software layer is the layer at which an end user programs their own code - for manipulation, navigation, computer vision, machine learning or some other application. For example, all the ROS packages and Python scripts within the *interbotix_XXXXX_examples* directory (which exist in the repositories that build on-top of this one) could be described as 'application' layer code.
 
+#### Video Overview
+<p align="center">
+  <a href=”https://www.youtube.com/watch?v=wCWzuL05aN8”>
+    <img width="410" height="auto" src="https://www.trossenrobotics.com/shared/github/github_irros_overview.png">
+  </a>
+</p>
+
 ## Contributing
 Feel free to send PRs to add features to currently existing Actuator ROS wrappers or to include a new one. Note that all PRs should follow the structure and naming conventions outlined in the repo including documentation.
 
 ## Contributors
 - [Solomon Wiznitzer](https://github.com/swiz23) - **ROS Engineer**
+- [Luke Schmitt](https://github.com/lsinterbotix) - **Robotics Software Engineer**

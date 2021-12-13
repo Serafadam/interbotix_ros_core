@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(xseries_msgs)
+project(interbotix_xs_msgs)
 
 if (NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
@@ -14,9 +14,14 @@ find_package(std_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
  set (MSG_FILES
+   msg/ArmJoy.msg
+   msg/HexJoy.msg
    msg/JointGroupCommand.msg
    msg/JointSingleCommand.msg
+   msg/JointTemps.msg
    msg/JointTrajectoryCommand.msg
+   msg/LocobotJoy.msg
+   msg/TurretJoy.msg
  )
 
 ## Generate services in the 'srv' folder

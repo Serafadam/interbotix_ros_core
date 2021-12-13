@@ -13,11 +13,19 @@ InterbotixRobotXS::InterbotixRobotXS(const rclcpp::NodeOptions &options)
   success = robot_init_port();
   if (!success) return;
 
-  success = robot_ping_motors();
-  if (!success) return;
+  if (!robot_ping_motors())
+  {
+    success = false;
+    RCLCPP_ERROR(this->get_logger(), "Could not find all motors. Shutting down...");
+    return;
+  }
 
-  success = robot_load_motor_configs();
-  if (!success) return;
+  if (!robot_load_motor_configs())
+  {
+    success = false;
+    RCLCPP_ERROR(this->get_logger(), "Failed to write configurations to all motors. Shutting down...");
+    return;
+  }
 
   robot_init_controlItems();
   robot_init_SDK_handlers();
@@ -187,14 +195,7 @@ void InterbotixRobotXS::robot_reboot_motors(std::string const& cmd_type, std::st
     RCLCPP_WARN(this->get_logger(), "The '%s' joint/group does not exist. Was it added to the motor config file?", name.c_str());
   else
     RCLCPP_ERROR(this->get_logger(), "Invalid command for argument 'cmd_type' while rebooting motors.");
-
-  for (auto const& joint_name:joints_to_torque)
-  {
-    for (auto const& name:sister_map[joint_name])
-      robot_torque_enable("single", name, true);
-  }
 }
-
 /// @brief Command a desired group of motors with the specified commands
 /// @param name - desired motor group name
 /// @param commands - vector of commands (order matches the order specified in the 'groups' section in the motor config file)
@@ -411,10 +412,6 @@ bool InterbotixRobotXS::robot_get_motor_configs(void)
   if (mode_configs.IsNull())
     RCLCPP_INFO(this->get_logger(), "Mode Config file is empty.");
 
-  port = motor_configs["port"].as<std::string>(PORT);
-  if (mode_configs["port"])
-    port = mode_configs["port"].as<std::string>(PORT);
-
   YAML::Node all_motors = motor_configs["motors"];
   for (YAML::const_iterator motor_itr = all_motors.begin(); motor_itr != all_motors.end(); motor_itr++)
   {
@@ -536,6 +533,7 @@ bool InterbotixRobotXS::robot_init_port(void)
 /// @param <bool> [out] - True if all motors were found; False otherwise
 bool InterbotixRobotXS::robot_ping_motors(void)
 {
+  bool success = true;
   for (auto const& motor:motor_map)
   {
     uint16_t model_number = 0;
@@ -548,7 +546,7 @@ bool InterbotixRobotXS::robot_ping_motors(void)
     RCLCPP_INFO(this->get_logger(), "ID : %d, Model Number : %d", motor.second.motor_id, model_number);
     dxl_wb.torque(motor.second.motor_id, false);
   }
-  return true;
+  return success;
 }
 
 /// @brief Writes some 'startup' EEPROM register values to the Dynamixel servos

@@ -1,5 +1,5 @@
 # Troubleshooting a Dynamixel-based Robot
-This guide walks a user through possible issues that can occur when using a Dynamixel-based robot and how to fix them. If, after following this guide, the issues persists, feel free to post an Issue on GitHub or send an email to trsupport@trossenrobotics.com. Also, please note that it is assumed that the robots are being directly used with a Linux machine (either Ubuntu 16.04 or 18.04), not on any other operating system (ex. Mac, Windows) or in a virtual machine.
+This guide walks a user through possible issues that can occur when using a Dynamixel-based robot and how to fix them. If, after following this guide, the issues persists, feel free to post an Issue on GitHub or send an email to trsupport@trossenrobotics.com. Also, please note that it is assumed that the robots are being directly used with a Linux machine (either Ubuntu 18.04 or 20.04), not on any other operating system (ex. Mac, Windows) or in a virtual machine.
 
 ## Dynamixel Wizard 2.0 Tool
 For debugging purposes, we highly recommend to install the [Dynamixel Wizard 2.0](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/#install-linux) tool created by ROBOTIS (our motor supplier). This tool makes it easy to find and view the registers of all the motors attached to the U2D2 from a graphical interface. It also allows you to set registers as well. After following the installation instructions, open up the Wizard, and click the *Options* button. A window similar to the one below should pop up.
@@ -30,7 +30,7 @@ Similarly, overheating can occur if commanding high PWM or current values to a m
 In any event, to fix this error, either power cycle the motors (unplug/replug the power cable to the motor hub), or call the `reboot_motors` ROS service for those particular motors. The advantage of doing the second approach is that the ROS session does not have to be shut down beforehand.
 
 ##### Can't find Dynamixel ID
-If you see a red error message in the terminal after launching the ROS driver node that says `Can't find Dynamixel ID 1` or similar, don't panic! All the node is trying to say is that it tried to ping a motor, but never received a response. This could happen due to a few reasons.
+If you see a red error message in the terminal after launching the ROS driver node that says `[xs_sdk] Can't find Dynamixel ID '1', Joint Name : 'waist'` or similar, don't panic! All the node is trying to say is that it tried to ping the motor with that ID and joint name, but never received a response. This could happen due to a few reasons:
 
 - *One or more motors are in an error state* - If any motor has a red flashing LED, the ROS node will not be able to find it during startup. In this case, unplug/replug power from from the motor hub and try again
 
@@ -57,6 +57,14 @@ groupSyncRead getdata failed
 ```
 
 ... that means the computer failed to read some of the registers on the motors (typically, it's the Present Position, Present_Velocity, and Present_Current/Present_Load registers as these are read constantly so that the joint state topic can be updated). This could happen if the microUSB cable connecting the computer to the U2D2 is not plugged in fully, or if one or more of the 3-pin cables connecting the Dynamixels together become loose during operation. To stop these errors, just push in all loose cables.
+
+## Less Common Issues
+
+##### U2D2 not recognized (no symlink created)
+You may run into an issue where the computer is able to detect that it is connected to a device via `lsusb`, but no entry is created in the /dev directory. One possible reason may be that the FTDI drivers are out of date or not compatible with the U2D2 device. To fix this issue, download the latest recommended [VCP drivers](https://ftdichip.com/drivers/vcp-drivers/) for Linux. Then reload and install the drivers by navigating to the unpacked driver and running the following:
+```bash
+$ sudo modprobe ftdi_sio
+```
 
 ## Helpful Tips
 
